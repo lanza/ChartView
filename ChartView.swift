@@ -45,7 +45,10 @@ open class ChartView: UIView {
             return ChartViewDataSource(rowHeight: rowHeight, numberOfRows: numberOfRows, columnWidthPercentages: columnWidthPercentages, columnTypes: columnTypes, columnViews: columnViews, columnSpacing: columnSpacing, rowSpacing: rowSpacing, columnBackgroundColor: columnBackgroundColor, rowBackgroundColor: rowBackgroundColor, backgroundColor: backgroundColor!)
             
         }
+    }
     
+    public func views<Type: UIView>(at index: Int, are type: Type.Type) -> [Type] {
+        return rowViews.map { $0.columnViews[index] as! Type }
     }
     
     public var rowViews = [RowView]()
