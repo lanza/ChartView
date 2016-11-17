@@ -1,32 +1,30 @@
 import UIKit
 
-public struct ChartViewDataSource {
+public struct ChartViewConfigurator: ChartViewDataSource {
     
     public var rowHeight: CGFloat
-    
     public var numberOfRows: Int
-    public var columnWidthPercentages: [CGFloat]
-    
-    public var columnTypes: [UIView.Type]?
-    public var columnViews: [UIView]?
-    
-    public var columnSpacing: CGFloat
     public var rowSpacing: CGFloat
-    
-    public var columnBackgroundColor: UIColor
-    public var rowBackgroundColor: UIColor
     public var backgroundColor: UIColor
     
-    public init(rowHeight: CGFloat, numberOfRows: Int, columnWidthPercentages: [CGFloat], columnTypes: [UIView.Type]?, columnViews: [UIView]?, columnSpacing: CGFloat, rowSpacing: CGFloat, columnBackgroundColor: UIColor, rowBackgroundColor: UIColor, backgroundColor: UIColor) {
+    public init(rowHeight: CGFloat, numberOfRows: Int, rowSpacing: CGFloat, backgroundColor: UIColor) {
         self.rowHeight = rowHeight
         self.numberOfRows = numberOfRows
-        self.columnWidthPercentages = columnWidthPercentages
-        self.columnTypes = columnTypes
-        self.columnViews = columnViews
-        self.columnSpacing = columnSpacing
         self.rowSpacing = rowSpacing
-        self.columnBackgroundColor = columnBackgroundColor
-        self.rowBackgroundColor = rowBackgroundColor
         self.backgroundColor = backgroundColor
     }
+}
+
+public protocol ChartViewDataSource {
+    var rowHeight: CGFloat { get }
+    var numberOfRows: Int { get }
+    var rowSpacing: CGFloat { get }
+    var backgroundColor: UIColor { get }
+}
+
+public extension ChartViewDataSource {
+    var rowHeight: CGFloat { return 35 }
+    var numberOfRows: Int { return 0 }
+    var rowSpacing: CGFloat { return 2 }
+    var backgroundColor: UIColor { return .white }
 }

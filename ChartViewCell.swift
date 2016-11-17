@@ -18,16 +18,16 @@ open class ChartViewCell: UITableViewCell {
         contentView.addSubview(bottomContentView)
         
         NSLayoutConstraint.activate([
-            topContentView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            topContentView.leftAnchor.constraint(equalTo: contentView.leftAnchor),
-            topContentView.rightAnchor.constraint(equalTo: contentView.rightAnchor),
+            topContentView.topAnchor.constraint(equalTo: contentView.layoutMarginsGuide.topAnchor),
+            topContentView.leftAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leftAnchor),
+            topContentView.rightAnchor.constraint(equalTo: contentView.layoutMarginsGuide.rightAnchor),
             topContentView.bottomAnchor.constraint(equalTo: chartView.topAnchor),
-            chartView.leftAnchor.constraint(equalTo: contentView.leftAnchor),
-            chartView.rightAnchor.constraint(equalTo: contentView.rightAnchor),
+            chartView.leftAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leftAnchor),
+            chartView.rightAnchor.constraint(equalTo: contentView.layoutMarginsGuide.rightAnchor),
             chartView.bottomAnchor.constraint(equalTo: bottomContentView.topAnchor),
-            bottomContentView.leftAnchor.constraint(equalTo: contentView.leftAnchor),
-            bottomContentView.rightAnchor.constraint(equalTo: contentView.rightAnchor),
-            bottomContentView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+            bottomContentView.leftAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leftAnchor),
+            bottomContentView.rightAnchor.constraint(equalTo: contentView.layoutMarginsGuide.rightAnchor),
+            bottomContentView.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor)
         ])
         selectionStyle = .none
     }

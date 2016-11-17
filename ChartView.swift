@@ -2,23 +2,13 @@ import UIKit
 
 open class ChartView: UIView {
     
+    
     public var width: CGFloat { return frame.width }
     public var height: CGFloat { return frame.height }
     
-    public var rowHeight: CGFloat = 0
-    public var columnWidthPercentages: [CGFloat] = [100]
-    
-    public var numberOfRows = 0
-    public var numberOfColumns: Int { return columnWidthPercentages.count }
-    
-    public var columnTypes: [UIView.Type]? = [UITextField.self]
-    public var columnViews: [UIView]?
-    
-    public var columnSpacing: CGFloat = 0
-    public var rowSpacing: CGFloat = 0
-    
-    public var columnBackgroundColor = UIColor.white
-    public var rowBackgroundColor = UIColor.black
+    public var rowHeight: CGFloat { return chartViewDataSource.rowHeight }
+    public var rowSpacing: CGFloat { return chartViewDataSource.rowSpacing }
+    public var numberOfRows: Int { return chartViewDataSource.numberOfRows }
     
     public init() {
         super.init(frame: CGRect())
@@ -27,78 +17,104 @@ open class ChartView: UIView {
         temp.isActive = true
     }
     
-    public var chartViewDataSource: ChartViewDataSource {
-        set { let cvds = newValue
-            rowHeight = cvds.rowHeight
-            columnWidthPercentages = cvds.columnWidthPercentages
-            numberOfRows = cvds.numberOfRows
-            columnSpacing = cvds.columnSpacing
-            columnTypes = cvds.columnTypes
-            columnViews = cvds.columnViews
-            rowSpacing = cvds.rowSpacing
-            columnBackgroundColor = cvds.columnBackgroundColor
-            rowBackgroundColor = cvds.rowBackgroundColor
-            backgroundColor = cvds.backgroundColor
-            setup()
-        }
-        get {
-            return ChartViewDataSource(rowHeight: rowHeight, numberOfRows: numberOfRows, columnWidthPercentages: columnWidthPercentages, columnTypes: columnTypes, columnViews: columnViews, columnSpacing: columnSpacing, rowSpacing: rowSpacing, columnBackgroundColor: columnBackgroundColor, rowBackgroundColor: rowBackgroundColor, backgroundColor: backgroundColor!)
-            
+    public func register(_ rowViewType: RowView.Type, forResuseIdentifier reuseIdentifier: String) {
+        rowView = (rowViewType, reuseIdentifier)
+    }
+    
+    var rowView: (type: RowView.Type, identifier: String)?
+    
+    
+    public var chartViewDataSource: ChartViewDataSource! {
+        didSet {
+            backgroundColor = chartViewDataSource.backgroundColor
         }
     }
     
-    public func views<Type: UIView>(at index: Int, are type: Type.Type) -> [Type] {
-        return rowViews.map { $0.columnViews[index] as! Type }
+    public func views(at index: Int) -> [UIView] {
+        return rowViews.map { $0.columnViews[index] }
     }
     
-    public var rowViews = [RowView]()
+    public var rowViews: [RowView] { get { return _rowViews } }
+    fileprivate var _rowViews = [RowView]()
+    
+    func appendRowView(_ rowView: RowView) {
+        addSubview(rowView)
+        _rowViews.append(rowView)
+        rowView.translatesAutoresizingMaskIntoConstraints = false
+    }
+    
+    var currentRowCount = 0
+    var currentColumnViewTypes = [UIView.Type]()
+    
+    var unusedRows = [RowView]()
     
     public func setup() {
-
+   
+        if numberOfRows != currentRowCount {
+            unusedRows += _rowViews
+            _rowViews = []
+            
+            subviews.forEach { $0.removeFromSuperview() }
+            
+            
+            
+            setupRows(type: rowView?.type ?? RowView.self)
+        }
+        
+        for (index,rowView) in rowViews.enumerated() {
+            configurationClosure?(index,rowView)
+        }
+        setNeedsUpdateConstraints()
+    }
+    
+    func didPan(_ pgr: UIPanGestureRecognizer) {
+        if pgr.state == .ended {
+            UIView.animate(withDuration: 0.2) {
+                pgr.view!.transform = CGAffineTransform(translationX: 0, y: 0)
+            }
+        }
+        let translation = pgr.translation(in: pgr.view)
+        let velocity = pgr.velocity(in: pgr.view)
+        let start = pgr.location(in: pgr.view).x - translation.x
+       
+        guard start > (pgr.view!.frame.width / 2) else { return }
+        guard translation.x < 0 else { return }
+        let movement = abs(translation.x)
+        
+        if movement > (pgr.view!.frame.width / 3) {
+            print("should die")
+        } else {
+            print("nope")
+            pgr.view!.transform = CGAffineTransform(translationX: -movement, y: 0)
+        }
+    }
+    
+    func setupRows<RowViewType: RowView>(type: RowViewType.Type) {
+        
         var constraints = [NSLayoutConstraint]()
         
         for rowNumber in 0..<numberOfRows {
-            let rv = RowView()
-            rv.backgroundColor = rowBackgroundColor
-            rowViews.append(rv)
-            rv.translatesAutoresizingMaskIntoConstraints = false
-            addSubview(rv)
-        
+            
+            var rv: RowViewType
+            
+            if unusedRows.count > 0 {
+                rv = unusedRows.removeLast() as! RowViewType
+            } else {
+                rv = type.init()
+                let pgr = UIPanGestureRecognizer(target: self, action: #selector(didPan(_:)))
+                rv.addGestureRecognizer(pgr)
+                
+                rv.setupColumns()
+            }
+            
+            appendRowView(rv)
+            
             constraints.append(rv.leftAnchor.constraint(equalTo: leftAnchor, constant: rowSpacing))
             constraints.append(rv.rightAnchor.constraint(equalTo: rightAnchor, constant: -rowSpacing))
             constraints.append(rv.heightAnchor.constraint(equalToConstant: rowHeight))
+            
             let top = (rowNumber == 0) ? topAnchor : rowViews[rowNumber - 1].bottomAnchor
             constraints.append(rv.topAnchor.constraint(equalTo: top, constant: rowSpacing))
-            print(width)
-            
-            for columnNumber in 0..<numberOfColumns {
-                let type = columnTypes?[columnNumber]
-                let cv = type?.init() ?? self.columnViews![columnNumber]
-                cv.setContentCompressionResistancePriority(0, for: .horizontal)
-                cv.backgroundColor = columnBackgroundColor
-                rv.columnViews.append(cv)
-                cv.translatesAutoresizingMaskIntoConstraints = false
-                rv.addSubview(cv)
-                
-                constraints.append(cv.topAnchor.constraint(equalTo: rv.topAnchor, constant: columnSpacing))
-                constraints.append(cv.bottomAnchor.constraint(equalTo: rv.bottomAnchor, constant: -columnSpacing))
-                
-                let left = columnNumber == 0 ? rv.leftAnchor : rv.columnViews[columnNumber - 1].rightAnchor
-                constraints.append(cv.leftAnchor.constraint(equalTo: left, constant: columnSpacing))
-            }
-            if let last = rv.columnViews.last {
-                let constraint = last.rightAnchor.constraint(equalTo: rv.rightAnchor, constant: -columnSpacing)
-                constraint.priority = 500
-                constraints.append(constraint)
-            }
-            
-            for i in 1..<numberOfColumns {
-                let first = rv.columnViews[i-1]
-                let fwm = columnWidthPercentages[i-1]
-                let second = rv.columnViews[i]
-                let swm = columnWidthPercentages[i]
-                constraints.append(first.widthAnchor.constraint(equalTo: second.widthAnchor, multiplier: fwm/swm))
-            }
             
         }
         
@@ -111,6 +127,7 @@ open class ChartView: UIView {
         NSLayoutConstraint.activate(constraints)
     }
    
+    public var configurationClosure: ((Int,RowView) -> ())?
     
     public required init?(coder aDecoder: NSCoder) { fatalError() }
 }
