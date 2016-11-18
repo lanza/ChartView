@@ -164,8 +164,6 @@ open class ChartView: UIView {
         
         let removingCH = constraintHolders.remove(at: index)
         let rv = self._rowViews.remove(at: index)
-//        let frame = rv.frame
-//        rv.translatesAutoresizingMaskIntoConstraints = true
         
         var singleConstraint: NSLayoutConstraint!
         var singleConstraintHolder: ConstraintHolder!
@@ -174,9 +172,11 @@ open class ChartView: UIView {
         if rowViews.count == 0 {
             
             singleConstraint = bottomConstraint
+
             originalPriority = singleConstraint.priority
             (removingCH.all + [singleConstraint]).forEach { $0.isActive = false }
             self.bottomConstraint = self.bottomAnchor.constraint(equalTo: self.topAnchor, constant: 0)
+
             self.bottomConstraint.priority = 100
             self.bottomConstraint.isActive = true
             singleConstraint = bottomConstraint
@@ -199,7 +199,7 @@ open class ChartView: UIView {
             singleConstraint = self.bottomConstraint
             originalPriority = singleConstraint.priority
             (removingCH.all + [singleConstraint]).forEach { $0.isActive = false }
-            self.bottomConstraint = aboveCH.rowView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0)
+            self.bottomConstraint = aboveCH.rowView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -self.rowSpacing)
             self.bottomConstraint.priority = 100
             self.bottomConstraint.isActive = true
             singleConstraint = self.bottomConstraint
@@ -234,12 +234,16 @@ open class ChartView: UIView {
             singleConstraint.isActive = true
             if let sch = singleConstraintHolder {
                 sch.top = singleConstraint
+            } else {
+                self.bottomConstraint = singleConstraint
             }
         })
         
         NotificationCenter.default.post(name: Notification.Name(rawValue: "chartViewDidDelete"), object: self)
         
     }
+    
+
     
     public required init?(coder aDecoder: NSCoder) { fatalError() }
 }
