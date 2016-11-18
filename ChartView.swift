@@ -1,14 +1,10 @@
 import UIKit
 
+public protocol ChartViewDelegate: class {
+    func chartView(_ chartView: ChartView, commit editingStyle: ChartView.EditingStyle, forRowAt index: Int)
+}
+
 open class ChartView: UIView {
-    
-    
-    public var width: CGFloat { return frame.width }
-    public var height: CGFloat { return frame.height }
-    
-    public var rowHeight: CGFloat { return chartViewDataSource.rowHeight }
-    public var rowSpacing: CGFloat { return chartViewDataSource.rowSpacing }
-    public var numberOfRows: Int { return chartViewDataSource.numberOfRows }
     
     public init() {
         super.init(frame: CGRect())
@@ -17,37 +13,43 @@ open class ChartView: UIView {
         temp.isActive = true
     }
     
+    //MARK: - Delegation
+    public weak var delegate: ChartViewDelegate?
+    public enum EditingStyle {
+        case delete
+    }
+    
+    //MARK: - DataSource
+    public var rowHeight: CGFloat { return chartViewDataSource.rowHeight }
+    public var rowSpacing: CGFloat { return chartViewDataSource.rowSpacing }
+    public var numberOfRows: Int { return chartViewDataSource.numberOfRows }
+    public var chartViewDataSource: ChartViewDataSource! {
+        didSet { backgroundColor = chartViewDataSource.backgroundColor }
+    }
+    
+    //MARK: - RowView type registration
     public func register(_ rowViewType: RowView.Type, forResuseIdentifier reuseIdentifier: String) {
         rowView = (rowViewType, reuseIdentifier)
     }
-    
     var rowView: (type: RowView.Type, identifier: String)?
     
-    
-    public var chartViewDataSource: ChartViewDataSource! {
-        didSet {
-            backgroundColor = chartViewDataSource.backgroundColor
-        }
-    }
-    
-    public func views(at index: Int) -> [UIView] {
-        return rowViews.map { $0.columnViews[index] }
-    }
-    
+    //MARK: - RowViews
     public var rowViews: [RowView] { get { return _rowViews } }
     fileprivate var _rowViews = [RowView]()
-    
     func appendRowView(_ rowView: RowView) {
         addSubview(rowView)
         _rowViews.append(rowView)
         rowView.translatesAutoresizingMaskIntoConstraints = false
     }
     
+    //MARK: - RowViewTracking
     var currentRowCount = 0
     var currentColumnViewTypes = [UIView.Type]()
-    
     var unusedRows = [RowView]()
     
+    
+    //MARK: - Setup
+    public var configurationClosure: ((Int,RowView) -> ())?
     public func setup() {
    
         if numberOfRows != currentRowCount {
@@ -55,44 +57,15 @@ open class ChartView: UIView {
             _rowViews = []
             
             subviews.forEach { $0.removeFromSuperview() }
-            
-            
-            
             setupRows(type: rowView?.type ?? RowView.self)
         }
-        
         for (index,rowView) in rowViews.enumerated() {
             configurationClosure?(index,rowView)
         }
         setNeedsUpdateConstraints()
     }
-    
-    func didPan(_ pgr: UIPanGestureRecognizer) {
-        if pgr.state == .ended {
-            UIView.animate(withDuration: 0.2) {
-                pgr.view!.transform = CGAffineTransform(translationX: 0, y: 0)
-            }
-        }
-        let translation = pgr.translation(in: pgr.view)
-        let velocity = pgr.velocity(in: pgr.view)
-        let start = pgr.location(in: pgr.view).x - translation.x
-       
-        guard start > (pgr.view!.frame.width / 2) else { return }
-        guard translation.x < 0 else { return }
-        let movement = abs(translation.x)
-        
-        if movement > (pgr.view!.frame.width / 3) {
-            print("should die")
-        } else {
-            print("nope")
-            pgr.view!.transform = CGAffineTransform(translationX: -movement, y: 0)
-        }
-    }
-    
     func setupRows<RowViewType: RowView>(type: RowViewType.Type) {
-        
         var constraints = [NSLayoutConstraint]()
-        
         for rowNumber in 0..<numberOfRows {
             
             var rv: RowViewType
@@ -123,11 +96,38 @@ open class ChartView: UIView {
             constraint.priority = 500
             constraints.append(constraint)
         }
-        
         NSLayoutConstraint.activate(constraints)
     }
-   
-    public var configurationClosure: ((Int,RowView) -> ())?
+
+
+    //MARK: - Gesture recognition
+    func didPan(_ pgr: UIPanGestureRecognizer) {
+        if pgr.state == .ended {
+            UIView.animate(withDuration: 0.2) {
+                pgr.view!.transform = CGAffineTransform(translationX: 0, y: 0)
+            }
+        }
+        let translation = pgr.translation(in: pgr.view)
+        let velocity = pgr.velocity(in: pgr.view)
+        let start = pgr.location(in: pgr.view).x - translation.x
+       
+        guard start > (pgr.view!.frame.width / 2) else { return }
+        guard translation.x < 0 else { return }
+        let movement = abs(translation.x)
+        
+        if movement > (pgr.view!.frame.width / 3) {
+            deleteRowView(pgr.view as! RowView)
+        } else {
+            pgr.view!.transform = CGAffineTransform(translationX: -movement, y: 0)
+        }
+    }
+    func deleteRowView(_ rowView: RowView) {
+        guard let index = rowViews.index(of: rowView) else { fatalError() }
+        delegate?.chartView(self, commit: .delete, forRowAt: index)
+        guard chartViewDataSource.numberOfRows == rowViews.count else { fatalError("You needed to remove an element from the dataSource") }
+        
+        
+    }
     
     public required init?(coder aDecoder: NSCoder) { fatalError() }
 }

@@ -5,7 +5,6 @@ open class RowView: UIView {
     required public init() {
         super.init(frame: CGRect.zero)
     }
-    
     required public init?(coder aDecoder: NSCoder) { fatalError() }
     
     public var columnViews = [UIView]()

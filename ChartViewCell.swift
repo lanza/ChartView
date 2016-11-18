@@ -31,5 +31,5 @@ open class ChartViewCell: UITableViewCell {
         ])
         selectionStyle = .none
     }
-    public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+    public required init?(coder aDecoder: NSCoder) { fatalError() }
 }
