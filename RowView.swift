@@ -1,6 +1,10 @@
 import UIKit
 
 open class RowView: UIView {
+    
+    open func prepareForReuse() {
+        
+    }
    
     required public init() {
         super.init(frame: CGRect.zero)

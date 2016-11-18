@@ -17,6 +17,9 @@ open class ChartViewCell: UITableViewCell {
         contentView.addSubview(chartView)
         contentView.addSubview(bottomContentView)
         
+        let cvba = chartView.bottomAnchor.constraint(equalTo: bottomContentView.topAnchor)
+        cvba.priority = cvba.priority - 10
+        
         NSLayoutConstraint.activate([
             topContentView.topAnchor.constraint(equalTo: contentView.layoutMarginsGuide.topAnchor),
             topContentView.leftAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leftAnchor),
@@ -24,7 +27,7 @@ open class ChartViewCell: UITableViewCell {
             topContentView.bottomAnchor.constraint(equalTo: chartView.topAnchor),
             chartView.leftAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leftAnchor),
             chartView.rightAnchor.constraint(equalTo: contentView.layoutMarginsGuide.rightAnchor),
-            chartView.bottomAnchor.constraint(equalTo: bottomContentView.topAnchor),
+            cvba,
             bottomContentView.leftAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leftAnchor),
             bottomContentView.rightAnchor.constraint(equalTo: contentView.layoutMarginsGuide.rightAnchor),
             bottomContentView.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor)
