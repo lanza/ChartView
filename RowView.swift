@@ -17,7 +17,7 @@ open class RowView: UIView {
     
     public var numberOfColumns: Int { return columnViewTypes.count }
     public var columnBackgroundColor = UIColor.white
-    public var columnSpacing: CGFloat = 2
+    public var columnSpacing: CGFloat = 1
     
     public func appendColumnView(_ columnView: UIView) {
         columnViews.append(columnView)
@@ -37,14 +37,17 @@ open class RowView: UIView {
             cv.backgroundColor = columnBackgroundColor
             
             cv.setContentCompressionResistancePriority(0, for: .horizontal)
-            constraints.append(cv.topAnchor.constraint(equalTo: topAnchor, constant: columnSpacing))
-            constraints.append(cv.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -columnSpacing))
+            constraints.append(cv.topAnchor.constraint(equalTo: topAnchor, constant: 0))
+            constraints.append(cv.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0))
             
-            let left = columnNumber == 0 ? leftAnchor : columnViews[columnNumber - 1].rightAnchor
-            constraints.append(cv.leftAnchor.constraint(equalTo: left, constant: columnSpacing))
+            if columnNumber == 0 {
+                constraints.append(cv.leftAnchor.constraint(equalTo: leftAnchor))
+            } else {
+                constraints.append(cv.leftAnchor.constraint(equalTo: columnViews[columnNumber - 1].rightAnchor, constant: columnSpacing))
+            }
         }
         if let last = columnViews.last {
-            let constraint = last.rightAnchor.constraint(equalTo: rightAnchor, constant: -columnSpacing)
+            let constraint = last.rightAnchor.constraint(equalTo: rightAnchor, constant: 0)
             constraint.priority = 500
             constraints.append(constraint)
         }
