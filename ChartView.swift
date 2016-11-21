@@ -83,7 +83,7 @@ open class ChartView: UIView {
         }
     }
     func setupRows() {
-        constraintHolders = [ConstraintHolder]()
+        constraintHolders = []
         for rowNumber in 0..<numberOfRows {
             
             let rv = dequeueRowView()
@@ -102,15 +102,16 @@ open class ChartView: UIView {
             constraintHolders.append(ch)
         }
         
+        if let bc = bottomConstraint {
+            bc.isActive = false
+            bottomConstraint = nil
+        }
         if let last = rowViews.last {
-            if let bc = bottomConstraint {
-                bc.isActive = false
-                bottomConstraint = nil
-            }
+            
             bottomConstraint = last.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -rowSpacing)
             bottomConstraint.priority = 500
         }
-        NSLayoutConstraint.activate(constraintHolders.flatMap { $0.all } + [bottomConstraint])
+        NSLayoutConstraint.activate(constraintHolders.flatMap { $0.all } + [bottomConstraint].flatMap { $0 })
     }
     
     private var bottomConstraint: NSLayoutConstraint!
