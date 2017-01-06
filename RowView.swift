@@ -1,22 +1,20 @@
 import UIKit
 
 open class RowView: UIView {
-    
-    open func prepareForReuse() {
-        
-    }
-   
     required public init() {
         super.init(frame: CGRect.zero)
     }
     required public init?(coder aDecoder: NSCoder) { fatalError() }
     
-    public var columnViews = [UIView]()
+    open func prepareForReuse() { 
+    }
+    
+    public var columnViews: [UIView] = []
     open var columnViewTypes: [UIView.Type] = [UILabel.self, UILabel.self]
-    open var columnWidthPercentages: [CGFloat] = [50,50]
+    open var columnWidths: [CGFloat] = [50,50]
     
     public var numberOfColumns: Int { return columnViewTypes.count }
-    public var columnBackgroundColor = UIColor.white
+    public var columnBackgroundColor: UIColor = .white
     public var columnSpacing: CGFloat = 1
     
     public func appendColumnView(_ columnView: UIView) {
@@ -25,12 +23,16 @@ open class RowView: UIView {
         addSubview(columnView)
     }
     
+    open func getColumnView(columnNumber: Int) -> UIView {
+        return columnViewTypes[columnNumber].init()
+    }
+    
     open func setupColumns() {
         
         var constraints = [NSLayoutConstraint]()
         
         for columnNumber in 0..<numberOfColumns {
-            let cv = columnViewTypes[columnNumber].init()
+            let cv = getColumnView(columnNumber: columnNumber)
             
             appendColumnView(cv)
             
@@ -45,20 +47,22 @@ open class RowView: UIView {
             } else {
                 constraints.append(cv.leftAnchor.constraint(equalTo: columnViews[columnNumber - 1].rightAnchor, constant: columnSpacing))
             }
+        
         }
         if let last = columnViews.last {
             let constraint = last.rightAnchor.constraint(equalTo: rightAnchor, constant: 0)
-            constraint.priority = 500
+            constraint.priority = 1000
             constraints.append(constraint)
         }
         
         for i in 1..<numberOfColumns {
             let first = columnViews[i-1]
-            let fwm = columnWidthPercentages[i-1]
+            let fwm = columnWidths[i-1]
             let second = columnViews[i]
-            let swm = columnWidthPercentages[i]
+            let swm = columnWidths[i]
             constraints.append(first.widthAnchor.constraint(equalTo: second.widthAnchor, multiplier: fwm/swm))
         }
+        
         NSLayoutConstraint.activate(constraints)
     }
 }

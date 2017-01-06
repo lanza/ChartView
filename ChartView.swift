@@ -69,7 +69,49 @@ open class ChartView: UIView {
             configurationClosure?(index,rowView)
         }
         setNeedsUpdateConstraints()
+        
+        checkAndAddEmpty()
     }
+   
+    private var emptyBottomConstraint: NSLayoutConstraint?
+    private func checkAndAddEmpty() {
+        if numberOfRows == 0, let text = emptyText {
+            if emptyBottomConstraint == nil {
+                emptyBottomConstraint = topAnchor.constraint(equalTo: bottomAnchor, constant: -emptyHeight)
+                emptyBottomConstraint?.priority = 50
+                emptyBottomConstraint?.isActive = true
+            }
+            constrainEmptyLabel()
+            emptyLabel.text = text
+        } else {
+            if subviews.contains(emptyLabel) {
+                emptyLabel.removeFromSuperview()
+                removeConstraint(emptyBottomConstraint!)
+                emptyBottomConstraint = nil
+            }
+        }
+    }
+   
+    public var emptyText: String? = "Hi muffin"
+    lazy public var emptyLabel: UILabel = {
+        let l = UILabel()
+        l.translatesAutoresizingMaskIntoConstraints = false
+        
+        l.backgroundColor = #colorLiteral(red: 0.9568895725, green: 0.9568895725, blue: 0.9568895725, alpha: 1)
+        l.textAlignment = .center
+        return l
+    }()
+    private func constrainEmptyLabel() {
+        addSubview(emptyLabel)
+        NSLayoutConstraint.activate([
+            emptyLabel.topAnchor.constraint(equalTo: self.topAnchor),
+            emptyLabel.leftAnchor.constraint(equalTo: self.leftAnchor),
+            emptyLabel.rightAnchor.constraint(equalTo: self.rightAnchor),
+            emptyLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+            ])
+    }
+    public var emptyHeight: CGFloat = 30
+    
     func dequeueRowView() -> RowView {
         if unusedRows.count > 0 {
             return unusedRows.removeLast()
@@ -241,7 +283,6 @@ open class ChartView: UIView {
         })
         
         NotificationCenter.default.post(name: Notification.Name(rawValue: "chartViewDidDelete"), object: self)
-        
     }
     
 
