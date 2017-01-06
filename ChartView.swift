@@ -96,7 +96,7 @@ open class ChartView: UIView {
     lazy public var emptyLabel: UILabel = {
         let l = UILabel()
         l.translatesAutoresizingMaskIntoConstraints = false
-        
+        l.minimumScaleFactor = 0.4
         l.backgroundColor = #colorLiteral(red: 0.9568895725, green: 0.9568895725, blue: 0.9568895725, alpha: 1)
         l.textAlignment = .center
         return l
