@@ -21,16 +21,16 @@ open class ChartViewCell: UITableViewCell {
         cvba.priority = cvba.priority - 10
         
         NSLayoutConstraint.activate([
-            topContentView.topAnchor.constraint(equalTo: contentView.layoutMarginsGuide.topAnchor),
-            topContentView.leftAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leftAnchor),
-            topContentView.rightAnchor.constraint(equalTo: contentView.layoutMarginsGuide.rightAnchor),
+            topContentView.topAnchor.constraint(equalTo: contentView.layoutMarginsGuide.topAnchor, constant: 4),
+            topContentView.leftAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leftAnchor, constant: -6),
+            topContentView.rightAnchor.constraint(equalTo: contentView.layoutMarginsGuide.rightAnchor, constant: 6),
             topContentView.bottomAnchor.constraint(equalTo: chartView.topAnchor),
-            chartView.leftAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leftAnchor),
-            chartView.rightAnchor.constraint(equalTo: contentView.layoutMarginsGuide.rightAnchor),
+            chartView.leftAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leftAnchor, constant: -6),
+            chartView.rightAnchor.constraint(equalTo: contentView.layoutMarginsGuide.rightAnchor, constant: 6),
             cvba,
-            bottomContentView.leftAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leftAnchor),
-            bottomContentView.rightAnchor.constraint(equalTo: contentView.layoutMarginsGuide.rightAnchor),
-            bottomContentView.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor)
+            bottomContentView.leftAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leftAnchor, constant: -6),
+            bottomContentView.rightAnchor.constraint(equalTo: contentView.layoutMarginsGuide.rightAnchor, constant: 6),
+            bottomContentView.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor, constant: -4)
         ])
         selectionStyle = .none
     }
