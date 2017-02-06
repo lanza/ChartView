@@ -28,3 +28,4 @@ public extension ChartViewDataSource {
     var rowSpacing: CGFloat { return 2 }
     var backgroundColor: UIColor { return .white }
 }
+

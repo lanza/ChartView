@@ -73,8 +73,8 @@ open class ChartView: UIView {
         checkAndAddEmpty()
     }
    
-    private var emptyBottomConstraint: NSLayoutConstraint?
-    private func checkAndAddEmpty() {
+    fileprivate var emptyBottomConstraint: NSLayoutConstraint?
+    fileprivate func checkAndAddEmpty() {
         if numberOfRows == 0, let text = emptyText {
             if emptyBottomConstraint == nil {
                 emptyBottomConstraint = topAnchor.constraint(equalTo: bottomAnchor, constant: -emptyHeight)
@@ -97,7 +97,6 @@ open class ChartView: UIView {
         let l = UILabel()
         l.translatesAutoresizingMaskIntoConstraints = false
         l.minimumScaleFactor = 0.4
-        l.backgroundColor = #colorLiteral(red: 0.9568895725, green: 0.9568895725, blue: 0.9568895725, alpha: 1)
         l.textAlignment = .center
         return l
     }()
@@ -156,10 +155,10 @@ open class ChartView: UIView {
         NSLayoutConstraint.activate(constraintHolders.flatMap { $0.all } + [bottomConstraint].flatMap { $0 })
     }
     
-    private var bottomConstraint: NSLayoutConstraint!
-    private var constraintHolders: [ConstraintHolder]!
+    fileprivate var bottomConstraint: NSLayoutConstraint!
+    fileprivate var constraintHolders: [ConstraintHolder]!
     
-    private class ConstraintHolder {
+    fileprivate class ConstraintHolder {
         weak var rowView: RowView!
         
         weak var left: NSLayoutConstraint!
@@ -199,7 +198,11 @@ open class ChartView: UIView {
         guard start > (pgr.view!.frame.width / 2) else { return }
         pgr.view!.transform = CGAffineTransform(translationX: -movement, y: 0)
     }
-    
+   
+    public required init?(coder aDecoder: NSCoder) { fatalError() }
+}
+
+extension ChartView {
     func deleteRowView(_ rowView: RowView, velocity: CGFloat) {
         guard let index = rowViews.index(of: rowView) else { return }
         delegate?.chartView(self, commit: .delete, forRowAt: index)
@@ -287,5 +290,4 @@ open class ChartView: UIView {
     
 
     
-    public required init?(coder aDecoder: NSCoder) { fatalError() }
 }
