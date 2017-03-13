@@ -130,7 +130,7 @@ open class ChartView: UIView {
             let rv = dequeueRowView()
             appendRowView(rv)
             
-            var ch = ConstraintHolder()
+            let ch = ConstraintHolder()
             
             ch.rowView = rv
             
