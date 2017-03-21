@@ -18,7 +18,7 @@ class ViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! ChartViewCell
-        cell.chartView.registerForReuse(SimpleRowView.self)
+        cell.registerRowViewForReuse(SimpleRowView.self)
         
         let cvdsd = ChartViewDataSourceDemo()
         cell.chartViewDataSource = cvdsd
