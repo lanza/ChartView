@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D9337FFB1DF4B24E001596B5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D9337FFA1DF4B24E001596B5 /* Main.storyboard */; };
 		D9899DF61DF4A53C008766B5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9899DF51DF4A53C008766B5 /* AppDelegate.swift */; };
 		D9899DF81DF4A53C008766B5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9899DF71DF4A53C008766B5 /* ViewController.swift */; };
 		D9899DFD1DF4A53C008766B5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D9899DFC1DF4A53C008766B5 /* Assets.xcassets */; };
@@ -16,7 +15,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		D9337FFA1DF4B24E001596B5 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		D9899DF21DF4A53C008766B5 /* iOS Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iOS Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9899DF51DF4A53C008766B5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D9899DF71DF4A53C008766B5 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -60,7 +58,6 @@
 			children = (
 				D9899DF51DF4A53C008766B5 /* AppDelegate.swift */,
 				D9899DF71DF4A53C008766B5 /* ViewController.swift */,
-				D9337FFA1DF4B24E001596B5 /* Main.storyboard */,
 				D9899DFC1DF4A53C008766B5 /* Assets.xcassets */,
 				D9899DFE1DF4A53C008766B5 /* LaunchScreen.storyboard */,
 				D9899E011DF4A53C008766B5 /* Info.plist */,
@@ -86,6 +83,7 @@
 				D9899DEE1DF4A53C008766B5 /* Sources */,
 				D9899DEF1DF4A53C008766B5 /* Frameworks */,
 				D9899DF01DF4A53C008766B5 /* Resources */,
+				B3A523941E80D4DB00DE981F /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -103,12 +101,12 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0810;
-				LastUpgradeCheck = 0810;
-				ORGANIZATIONNAME = "Lanzaio";
+				LastUpgradeCheck = 0820;
+				ORGANIZATIONNAME = Lanzaio;
 				TargetAttributes = {
 					D9899DF11DF4A53C008766B5 = {
 						CreatedOnToolsVersion = 8.1;
-						DevelopmentTeam = 8Q693ZG5RN;
+						DevelopmentTeam = 72MNHNDUNH;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -136,13 +134,28 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D9337FFB1DF4B24E001596B5 /* Main.storyboard in Resources */,
 				D9899E001DF4A53C008766B5 /* LaunchScreen.storyboard in Resources */,
 				D9899DFD1DF4A53C008766B5 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		B3A523941E80D4DB00DE981F /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [[ $USER == 'lanza' ]]; then\n/Users/lanza/bin/incrementXcodeBuild\nfi";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		D9899DEE1DF4A53C008766B5 /* Sources */ = {
@@ -186,6 +199,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -236,6 +250,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -265,7 +280,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 8Q693ZG5RN;
+				DEVELOPMENT_TEAM = 72MNHNDUNH;
 				INFOPLIST_FILE = Source/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "io.lanza.iOS-Example";
@@ -278,7 +293,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 8Q693ZG5RN;
+				DEVELOPMENT_TEAM = 72MNHNDUNH;
 				INFOPLIST_FILE = Source/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "io.lanza.iOS-Example";

@@ -1,18 +1,19 @@
 import UIKit
 
-class ChartViewDataSourceImplementation: ChartViewDataSource {
-    var numberOfRowsInChartView: ((_ chartView: ChartView) -> Int)!
-    func numberOfRows(in chartView: ChartView) -> Int {
+open class ChartViewDataSourceImplementation: ChartViewDataSource {
+    public init() {}
+    public var numberOfRowsInChartView: ((_ chartView: ChartView) -> Int)!
+    public func numberOfRows(in chartView: ChartView) -> Int {
         return numberOfRowsInChartView(chartView)
     }
 
-    var cellForRowAtIndex: ((_ chartView: ChartView, _ index: Int) -> ChartViewCell)!
-    func chartView(_ chartView: ChartView, cellForRowAtIndex index: Int) -> ChartViewCell {
+    public var cellForRowAtIndex: ((_ chartView: ChartView, _ index: Int) -> RowView)!
+    public func chartView(_ chartView: ChartView, cellForRowAtIndex index: Int) -> RowView {
         return cellForRowAtIndex(chartView,index)
     }
     
-    var chartViewCommitEditingStyle: ((_ chartView: ChartView, _ editingStyle: ChartView.EditingStyle) -> Void)!
-    func chartView(_ chartView: ChartView, commit editingStyle: ChartView.EditingStyle, forRowAt index: Int) {
+    public var chartViewCommitEditingStyle: ((_ chartView: ChartView, _ editingStyle: ChartView.EditingStyle) -> Void)!
+    public func chartView(_ chartView: ChartView, commit editingStyle: ChartView.EditingStyle, forRowAt index: Int) {
         chartViewCommitEditingStyle(chartView,editingStyle)
     }
 }

@@ -9,7 +9,7 @@ public protocol ChartViewDelegate: class {
 public protocol ChartViewDataSource: class {
     
     func numberOfRows(in chartView: ChartView) -> Int
-    func chartView(_ chartView: ChartView, cellForRowAtIndex index: Int) -> ChartViewCell
+    func chartView(_ chartView: ChartView, cellForRowAtIndex index: Int) -> RowView
     
     func chartView(_ chartView: ChartView, commit editingStyle: ChartView.EditingStyle, forRowAt index: Int)
 }
@@ -44,10 +44,10 @@ open class ChartView: UIView {
     
     //MARK: - RowView type registration
     public func registerForReuse(_ rowViewType: RowView.Type) {
-        rowViewInformation = rowViewType
+        self.rowViewType = rowViewType
 
     }
-    var rowViewInformation: RowView.Type?
+    var rowViewType: RowView.Type = RowView.self
     
     //MARK: - RowViews
     public var rowViews: [RowView] { get { return _rowViews } }
@@ -129,15 +129,13 @@ open class ChartView: UIView {
     }
     public var emptyHeight: CGFloat = 30
     
-    func dequeueRowView() -> RowView {
+    public func dequeueRowView() -> RowView {
         if unusedRows.count > 0 {
             return unusedRows.removeLast()
         } else {
-            let rv = (rowViewInformation?.type ?? RowView.self).init()
+            let rv = rowViewType.init()
             let pgr = UIPanGestureRecognizer(target: self, action: #selector(didPan(_:)))
             rv.addGestureRecognizer(pgr)
-            
-            rv.setupColumns()
             return rv
         }
     }
@@ -145,7 +143,7 @@ open class ChartView: UIView {
         constraintHolders = []
         for rowNumber in 0..<numberOfRows {
             
-            let rv = dequeueRowView()
+            let rv = dataSource.chartView(self, cellForRowAtIndex: rowNumber)
             appendRowView(rv)
             
             let ch = ConstraintHolder()
@@ -201,7 +199,8 @@ open class ChartView: UIView {
         if pgr.state == .ended || pgr.state == .cancelled || pgr.state == .failed {
             if translation.x < 0 && movement > (pgr.view!.frame.width / 3) {
                 NotificationCenter.default.post(name: Notification.Name(rawValue: "chartViewWillDelete"), object: self)
-                self.deleteRowView(pgr.view as! RowView, velocity: velocity.x)
+                let index = rowViews.index(of: pgr.view as! RowView)!
+                self.deleteRowView(atIndex: index, velocity: velocity.x)
                 
             } else {
                 UIView.animate(withDuration: 0.2) {
@@ -221,10 +220,10 @@ open class ChartView: UIView {
 }
 
 extension ChartView {
-    func deleteRowView(_ rowView: RowView, velocity: CGFloat) {
-        guard let index = rowViews.index(of: rowView) else { return }
-        delegate?.chartView(self, commit: .delete, forRowAt: index)
-        guard chartViewDataSource.numberOfRows + 1 == rowViews.count else { fatalError("You needed to remove an element from the dataSource") }
+    func deleteRowView(atIndex index: Int, velocity: CGFloat) {
+        dataSource.chartView(self, commit: .delete, forRowAt: index)
+        
+        guard dataSource.numberOfRows(in: self) + 1 == rowViews.count else { fatalError("You needed to remove an element from the dataSource") }
         
         let removingCH = constraintHolders.remove(at: index)
         let rv = self._rowViews.remove(at: index)

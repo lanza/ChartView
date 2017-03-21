@@ -2,32 +2,41 @@ import UIKit
 
 //TODO - key value getting
 open class RowViewConfiguration {
-    init(columnConfigurations: [ColumnConfiguration]) {
+    public init(columnConfigurations: [ColumnConfiguration]) {
         self.columnConfigurations = columnConfigurations
     }
-    var columnConfigurations: [ColumnConfiguration] = []
-    static var base: RowViewConfiguration = {
+    public var columnConfigurations: [ColumnConfiguration] = []
+    public static var base: RowViewConfiguration = {
         let cc1 = ColumnConfiguration(width: 40, viewType: UIView.self)
         let cc2 = ColumnConfiguration(width: 60, viewType: UIView.self)
         return RowViewConfiguration(columnConfigurations: [cc1,cc2])
     }()
     
-    var columnSpacing: CGFloat = 1
-    var columnBackgroundColor: UIColor = .white
+    public var columnSpacing: CGFloat = 1
+    public var columnBackgroundColor: UIColor = .white
 }
 
 public struct ColumnConfiguration {
-    let width: CGFloat
-    let viewType: UIView.Type
-    func getView() -> UIView {
+    public let width: CGFloat
+    public let viewType: UIView.Type
+    public func getView() -> UIView {
         return viewType.init()
     }
+    
 }
 
-open class RowView<Configuration: RowViewConfiguration>: UIView {
+public protocol ColumnConfiguration2: Hashable {
+   
+    var width: CGFloat { get }
+    var viewType: UIView.Type { get }
     
-    var configuration: Configuration = Configuration.base as! Configuration
-    private var columnConfigurations: [ColumnConfiguration] { return configuration.columnConfigurations }
+}
+
+
+open class RowView: UIView {
+    
+    public static var configuration: RowViewConfiguration = RowViewConfiguration.base
+    private var columnConfigurations: [ColumnConfiguration] { return RowView.configuration.columnConfigurations }
     
     private var columnWidths: [CGFloat] { return columnConfigurations.map { $0.width } }
     private var columnViewTypes: [UIView.Type] { return columnConfigurations.map { $0.viewType } }
@@ -59,12 +68,12 @@ open class RowView<Configuration: RowViewConfiguration>: UIView {
     }
     
     private func setOneView() {
-        let spacing = configuration.columnSpacing
+        let spacing = RowView.configuration.columnSpacing
         columnViews.first!.frame = CGRect(x: spacing, y: spacing, width: frame.width - spacing * 2, height: frame.width - spacing * 2)
     }
     
     private func setMoreViews() {
-        let spacing = configuration.columnSpacing
+        let spacing = RowView.configuration.columnSpacing
         let height = frame.height - spacing * 2
         
         let totalWidthValues = columnWidths.reduce(0,+)
