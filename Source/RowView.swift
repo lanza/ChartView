@@ -1,62 +1,93 @@
 import UIKit
 
-//TODO - key value getting
-open class RowViewConfiguration {
-    public init(columnConfigurations: [ColumnConfiguration]) {
-        self.columnConfigurations = columnConfigurations
-    }
-    public var columnConfigurations: [ColumnConfiguration] = []
-    public static var base: RowViewConfiguration = {
-        let cc1 = ColumnConfiguration(width: 40, viewType: UIView.self)
-        let cc2 = ColumnConfiguration(width: 60, viewType: UIView.self)
-        return RowViewConfiguration(columnConfigurations: [cc1,cc2])
-    }()
-    
-    public var columnSpacing: CGFloat = 1
-    public var columnBackgroundColor: UIColor = .white
-}
+////TODO - key value getting
+//open class RowViewConfiguration {
+//    public init(columnConfigurations: [ColumnConfiguration]) {
+//        self.columnConfigurations = columnConfigurations
+//    }
+//    public var columnConfigurations: [ColumnConfiguration] = []
+//    public static var base: RowViewConfiguration = {
+//        let cc1 = ColumnConfiguration(width: 40, viewType: UIView.self)
+//        let cc2 = ColumnConfiguration(width: 60, viewType: UIView.self)
+//        return RowViewConfiguration(columnConfigurations: [cc1,cc2])
+//    }()
+//    
+//    public var columnSpacing: CGFloat = 1
+//    public var columnBackgroundColor: UIColor = .white
+//}
+//
+//public struct ColumnConfiguration {
+//    public let width: CGFloat
+//    public let viewType: UIView.Type
+//    public func getView() -> UIView {
+//        return viewType.init()
+//    }
+//    
+//}
 
-public struct ColumnConfiguration {
-    public let width: CGFloat
-    public let viewType: UIView.Type
+
+public protocol ColumnConfiguration: Hashable {
+    var width: CGFloat { get }
+    var viewType: UIView.Type { get }
+}
+extension ColumnConfiguration {
     public func getView() -> UIView {
         return viewType.init()
     }
-    
 }
-
-public protocol ColumnConfiguration2: Hashable {
-   
-    var width: CGFloat { get }
-    var viewType: UIView.Type { get }
-    
-}
-
 
 open class RowView: UIView {
     
-    public static var configuration: RowViewConfiguration = RowViewConfiguration.base
-    private var columnConfigurations: [ColumnConfiguration] { return RowView.configuration.columnConfigurations }
-    
-    private var columnWidths: [CGFloat] { return columnConfigurations.map { $0.width } }
-    private var columnViewTypes: [UIView.Type] { return columnConfigurations.map { $0.viewType } }
-    public private(set) var columnViews: [UIView]!
-    
-    required public init() {
-        super.init(frame: CGRect.zero)
-        columnViews = columnConfigurations.map { $0.getView() }
+    public struct Spacing {
+        
+        let left: CGFloat
+        let right: CGFloat
+        let top: CGFloat
+        let bottom: CGFloat
+        let between: CGFloat
+        
+        init(left: CGFloat, right: CGFloat, top: CGFloat, bottom: CGFloat, between: CGFloat) {
+            self.left = left
+            self.right = right
+            self.top = top
+            self.bottom = bottom
+            self.between = between
+        }
+        init(vertical: CGFloat, horizontal: CGFloat, between: CGFloat) {
+            self.left = horizontal
+            self.right = horizontal
+            self.top = vertical
+            self.bottom = vertical
+            self.between = between
+        }
+        init(all: CGFloat, between: CGFloat) {
+            self.left = all
+            self.right = all
+            self.bottom = all
+            self.top = all
+            self.between = between
+        }
+        init(all: CGFloat) {
+            self.left = all
+            self.right = all
+            self.bottom = all
+            self.top = all
+            self.between = all
+        }
     }
-    required public init?(coder aDecoder: NSCoder) { fatalError() }
     
+    public var spacing = Spacing(all: 1)
+    public var columnViews: [UIView] = []
+    public var columnWidths: [CGFloat] = []
+    
+    required public init() { super.init(frame: CGRect.zero) }
+    public override init(frame: CGRect) { super.init(frame: frame) }
+    public required init?(coder aDecoder: NSCoder) {fatalError()}
     
     private func appendColumnView(_ columnView: UIView) {
         columnViews.append(columnView)
         columnView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(columnView)
-    }
-    
-    open func getColumnView(columnNumber: Int) -> UIView {
-        return columnViewTypes[columnNumber].init()
     }
     
     private func setupColumns() {
@@ -68,28 +99,51 @@ open class RowView: UIView {
     }
     
     private func setOneView() {
-        let spacing = RowView.configuration.columnSpacing
-        columnViews.first!.frame = CGRect(x: spacing, y: spacing, width: frame.width - spacing * 2, height: frame.width - spacing * 2)
+        columnViews.first!.frame = CGRect(x: spacing.left, y: spacing.top, width: frame.width - (spacing.left + spacing.right), height: frame.width - (spacing.top + spacing.bottom))
     }
     
     private func setMoreViews() {
-        let spacing = RowView.configuration.columnSpacing
-        let height = frame.height - spacing * 2
+        let height = frame.height - (spacing.top + spacing.bottom)
+        
+        let usableWidth = frame.width - (spacing.left + spacing.right + (CGFloat(columnViews.count) + spacing.between))
         
         let totalWidthValues = columnWidths.reduce(0,+)
-        let adjustedColumnWidths = columnWidths.map { $0 / totalWidthValues }
+        let adjustedColumnWidths = columnWidths.map { ($0 / totalWidthValues) * usableWidth }
         
         let first = columnViews.first!
         
-        first.frame = CGRect(x: spacing, y: spacing, width: adjustedColumnWidths[0], height: height)
+        first.frame = CGRect(x: spacing.left, y: spacing.top, width: adjustedColumnWidths[0], height: height)
         
         for i in 1..<columnViews.count {
             let view = columnViews[i]
             let prev = columnViews[i-1]
-            view.frame = CGRect(x: prev.frame.maxX + spacing, y: spacing, width: adjustedColumnWidths[i], height: height)
+            view.frame = CGRect(x: prev.frame.maxX + spacing.between, y: spacing.top, width: adjustedColumnWidths[i], height: height)
         }
     }
     
     open func prepareForReuse() {
     }
+}
+
+open class ConfigurableRowView<Configuration: ColumnConfiguration>: RowView {
+    
+    open var columnConfigurations: [Configuration] {
+        return []
+    }
+    public var store: [Configuration:UIView] = [:]
+    required public init() {
+        super.init()
+        let pairs = columnConfigurations.map { ($0,$0.getView()) }
+        
+        pairs.forEach { pair in
+            store[pair.0] = pair.1
+        }
+       
+        columnViews = pairs.map { $0.1 }
+        columnWidths = columnConfigurations.map { $0.width }
+    }
+    required public init?(coder aDecoder: NSCoder) { fatalError() }
+    
+    
+
 }
