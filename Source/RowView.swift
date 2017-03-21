@@ -6,7 +6,7 @@ open class RowView: UIView {
     }
     required public init?(coder aDecoder: NSCoder) { fatalError() }
     
-    open func prepareForReuse() { 
+    open func prepareForReuse() {
     }
     
     public var columnViews: [UIView] = []
@@ -29,40 +29,89 @@ open class RowView: UIView {
     
     open func setupColumns() {
         
-        var constraints = [NSLayoutConstraint]()
-        
         for columnNumber in 0..<numberOfColumns {
             let cv = getColumnView(columnNumber: columnNumber)
             
             appendColumnView(cv)
             
             cv.backgroundColor = columnBackgroundColor
-            
-            cv.setContentCompressionResistancePriority(0, for: .horizontal)
-            constraints.append(cv.topAnchor.constraint(equalTo: topAnchor, constant: 0))
-            constraints.append(cv.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0))
-            
-            if columnNumber == 0 {
-                constraints.append(cv.leftAnchor.constraint(equalTo: leftAnchor))
-            } else {
-                constraints.append(cv.leftAnchor.constraint(equalTo: columnViews[columnNumber - 1].rightAnchor, constant: columnSpacing))
-            }
-        
         }
-        if let last = columnViews.last {
-            let constraint = last.rightAnchor.constraint(equalTo: rightAnchor, constant: 0)
-            constraint.priority = 1000
-            constraints.append(constraint)
+    }
+    
+    func layout() {
+    
+        switch columnViews.count {
+        case 0: fatalError("Why are you using this anyways?")
+        case 1: setOneView()
+        default: setMoreViews()
         }
+    }
+    private func setOneView() {
+        columnViews.first!.frame = CGRect(x: spacing.left, y: spacing.top, width: frame.width - (spacing.left + spacing.right), height: frame.height - (spacing.top + spacing.bottom))
+    }
+    
+    private func setMoreViews() {
+        let height = frame.height - (spacing.top + spacing.bottom)
         
-        for i in 1..<numberOfColumns {
-            let first = columnViews[i-1]
-            let fwm = columnWidths[i-1]
-            let second = columnViews[i]
-            let swm = columnWidths[i]
-            constraints.append(first.widthAnchor.constraint(equalTo: second.widthAnchor, multiplier: fwm/swm))
+        let usableWidth = frame.width - (spacing.left + spacing.right + (CGFloat(columnViews.count) + spacing.between))
+        
+        let totalWidthValues = columnWidths.reduce(0,+)
+        let adjustedColumnWidths = columnWidths.map { ($0 / totalWidthValues) * usableWidth }
+        
+        let first = columnViews.first!
+        
+        first.frame = CGRect(x: spacing.left, y: spacing.top, width: adjustedColumnWidths[0], height: height)
+        
+        for i in 1..<columnViews.count {
+            let view = columnViews[i]
+            let prev = columnViews[i-1]
+            view.frame = CGRect(x: prev.frame.maxX + spacing.between, y: spacing.top, width: adjustedColumnWidths[i], height: height)
         }
+    }
+    
+    public struct Spacing {
         
-        NSLayoutConstraint.activate(constraints)
+        let left: CGFloat
+        let right: CGFloat
+        let top: CGFloat
+        let bottom: CGFloat
+        let between: CGFloat
+        
+        init(left: CGFloat, right: CGFloat, top: CGFloat, bottom: CGFloat, between: CGFloat) {
+            self.left = left
+            self.right = right
+            self.top = top
+            self.bottom = bottom
+            self.between = between
+        }
+        init(vertical: CGFloat, horizontal: CGFloat, between: CGFloat) {
+            self.left = horizontal
+            self.right = horizontal
+            self.top = vertical
+            self.bottom = vertical
+            self.between = between
+        }
+        init(all: CGFloat, between: CGFloat) {
+            self.left = all
+            self.right = all
+            self.bottom = all
+            self.top = all
+            self.between = between
+        }
+        init(all: CGFloat) {
+            self.left = all
+            self.right = all
+            self.bottom = all
+            self.top = all
+            self.between = all
+        }
+    }
+    
+    public var spacing = Spacing(all: 1)
+    
+    open override func layoutSubviews() {
+        super.layoutSubviews()
+    
+        layout()
     }
 }
