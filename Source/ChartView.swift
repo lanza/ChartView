@@ -1,18 +1,6 @@
 import UIKit
 
-public protocol ChartViewDelegate: class {
-    
-    func rowHeight(for chartView: ChartView) -> CGFloat
-    func rowSpacing(for chartView: ChartView) -> CGFloat
-}
 
-public protocol ChartViewDataSource: class {
-    
-    func numberOfRows(in chartView: ChartView) -> Int
-    func chartView(_ chartView: ChartView, cellForRowAtIndex index: Int) -> RowView
-    
-    func chartView(_ chartView: ChartView, commit editingStyle: ChartView.EditingStyle, forRowAt index: Int)
-}
 
 
 open class ChartView: UIView {
@@ -303,7 +291,4 @@ extension ChartView {
         
         NotificationCenter.default.post(name: Notification.Name(rawValue: "chartViewDidDelete"), object: self)
     }
-    
-
-    
 }

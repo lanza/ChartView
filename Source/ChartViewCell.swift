@@ -2,6 +2,10 @@ import UIKit
 
 open class ChartViewCell: UITableViewCell {
     
+    public func registerRowViewForReuse(_ rowViewType: RowView.Type) {
+        chartView.registerForReuse(rowViewType)
+    }
+    
     public var chartViewDataSource: ChartViewDataSource! {
         didSet {
             chartView.dataSource = chartViewDataSource
@@ -10,7 +14,7 @@ open class ChartViewCell: UITableViewCell {
     }
     
     public let topContentView = UIView()
-    public let chartView = ChartView()
+    private let chartView = ChartView()
     public let bottomContentView = UIView()
     
     public override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
