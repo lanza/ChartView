@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B3BBFFC01E8092DD00112B5F /* ChartViewDataSourceImplementation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BBFFBF1E8092DD00112B5F /* ChartViewDataSourceImplementation.swift */; };
 		B3DC656F1E4861E100970EAC /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DC656B1E4861E100970EAC /* ChartView.swift */; };
 		B3DC65701E4861E100970EAC /* ChartViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DC656C1E4861E100970EAC /* ChartViewCell.swift */; };
-		B3DC65711E4861E100970EAC /* ChartViewConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DC656D1E4861E100970EAC /* ChartViewConfigurator.swift */; };
 		B3DC65721E4861E100970EAC /* RowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DC656E1E4861E100970EAC /* RowView.swift */; };
 		D9899DD41DF4A092008766B5 /* ChartView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9899DCA1DF4A092008766B5 /* ChartView.framework */; };
 		D9899DD91DF4A093008766B5 /* ChartViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9899DD81DF4A093008766B5 /* ChartViewTests.swift */; };
@@ -27,9 +27,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B3BBFFBF1E8092DD00112B5F /* ChartViewDataSourceImplementation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartViewDataSourceImplementation.swift; sourceTree = "<group>"; };
 		B3DC656B1E4861E100970EAC /* ChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
 		B3DC656C1E4861E100970EAC /* ChartViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartViewCell.swift; sourceTree = "<group>"; };
-		B3DC656D1E4861E100970EAC /* ChartViewConfigurator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartViewConfigurator.swift; sourceTree = "<group>"; };
 		B3DC656E1E4861E100970EAC /* RowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RowView.swift; sourceTree = "<group>"; };
 		D9899DCA1DF4A092008766B5 /* ChartView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ChartView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9899DCD1DF4A092008766B5 /* ChartView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChartView.h; sourceTree = "<group>"; };
@@ -80,8 +80,8 @@
 			isa = PBXGroup;
 			children = (
 				B3DC656B1E4861E100970EAC /* ChartView.swift */,
+				B3BBFFBF1E8092DD00112B5F /* ChartViewDataSourceImplementation.swift */,
 				B3DC656C1E4861E100970EAC /* ChartViewCell.swift */,
-				B3DC656D1E4861E100970EAC /* ChartViewConfigurator.swift */,
 				B3DC656E1E4861E100970EAC /* RowView.swift */,
 				D9899DCD1DF4A092008766B5 /* ChartView.h */,
 				D9899DCE1DF4A092008766B5 /* Info.plist */,
@@ -211,9 +211,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B3BBFFC01E8092DD00112B5F /* ChartViewDataSourceImplementation.swift in Sources */,
 				B3DC656F1E4861E100970EAC /* ChartView.swift in Sources */,
 				B3DC65701E4861E100970EAC /* ChartViewCell.swift in Sources */,
-				B3DC65711E4861E100970EAC /* ChartViewConfigurator.swift in Sources */,
 				B3DC65721E4861E100970EAC /* RowView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

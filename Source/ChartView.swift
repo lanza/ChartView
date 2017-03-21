@@ -1,10 +1,24 @@
 import UIKit
 
 public protocol ChartViewDelegate: class {
+    
+    func rowHeight(for chartView: ChartView) -> CGFloat
+    func rowSpacing(for chartView: ChartView) -> CGFloat
+}
+
+public protocol ChartViewDataSource: class {
+    
+    func numberOfRows(in chartView: ChartView) -> Int
+    func chartView(_ chartView: ChartView, cellForRowAtIndex index: Int) -> ChartViewCell
+    
     func chartView(_ chartView: ChartView, commit editingStyle: ChartView.EditingStyle, forRowAt index: Int)
 }
 
+
 open class ChartView: UIView {
+    public enum EditingStyle {
+        case delete
+    }
     
     public init() {
         super.init(frame: CGRect())
@@ -15,27 +29,31 @@ open class ChartView: UIView {
     
     //MARK: - Delegation
     public weak var delegate: ChartViewDelegate?
-    public enum EditingStyle {
-        case delete
-    }
+    public weak var dataSource: ChartViewDataSource!
     
     //MARK: - DataSource
-    public var rowHeight: CGFloat { return chartViewDataSource.rowHeight }
-    public var rowSpacing: CGFloat { return chartViewDataSource.rowSpacing }
-    public var numberOfRows: Int { return chartViewDataSource.numberOfRows }
-    public var chartViewDataSource: ChartViewDataSource! {
-        didSet { backgroundColor = chartViewDataSource.backgroundColor }
+    public var rowHeight: CGFloat {
+        return delegate?.rowHeight(for: self) ?? 30
+    }
+    public var rowSpacing: CGFloat {
+        return delegate?.rowSpacing(for: self) ?? 1
+    } 
+    public var numberOfRows: Int {
+        return dataSource.numberOfRows(in: self)
     }
     
     //MARK: - RowView type registration
-    public func register(_ rowViewType: RowView.Type, forResuseIdentifier reuseIdentifier: String) {
-        rowViewInformation = (rowViewType, reuseIdentifier)
+    public func registerForReuse(_ rowViewType: RowView.Type) {
+        rowViewInformation = rowViewType
+
     }
-    var rowViewInformation: (type: RowView.Type, identifier: String)?
+    var rowViewInformation: RowView.Type?
     
     //MARK: - RowViews
     public var rowViews: [RowView] { get { return _rowViews } }
+    
     fileprivate var _rowViews = [RowView]()
+    
     func appendRowView(_ rowView: RowView) {
         addSubview(rowView)
         _rowViews.append(rowView)
