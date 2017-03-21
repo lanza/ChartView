@@ -29,7 +29,11 @@ open class ChartView: UIView {
     
     //MARK: - Delegation
     public weak var delegate: ChartViewDelegate?
-    public weak var dataSource: ChartViewDataSource!
+    public weak var dataSource: ChartViewDataSource! {
+        didSet {
+            setup()
+        }
+    }
     
     //MARK: - DataSource
     public var rowHeight: CGFloat {
@@ -65,27 +69,16 @@ open class ChartView: UIView {
     var unusedRows = [RowView]()
     
     //MARK: - Setup
-    open func prepareForReuse() {
-        for rowView in rowViews {
-            rowView.prepareForReuse()
-        }
-    }
-    public var configurationClosure: ((Int,RowView) -> ())?
+    
     public func setup() {
         
-        prepareForReuse()
+        unusedRows += _rowViews
+        _rowViews = []
         
-        if numberOfRows != currentRowCount {
-            unusedRows += _rowViews
-            _rowViews = []
-            
-            subviews.forEach { $0.removeFromSuperview() }
-            setupRows()
-            currentRowCount = numberOfRows
-        }
-        for (index,rowView) in rowViews.enumerated() {
-            configurationClosure?(index,rowView)
-        }
+        subviews.forEach { $0.removeFromSuperview() }
+        setupRows()
+        currentRowCount = numberOfRows
+    
         setNeedsUpdateConstraints()
         
         checkAndAddEmpty()
@@ -131,11 +124,17 @@ open class ChartView: UIView {
     
     public func dequeueRowView() -> RowView {
         if unusedRows.count > 0 {
-            return unusedRows.removeLast()
+            
+            let reuseRowView = unusedRows.removeLast()
+            reuseRowView.prepareForReuse()
+            return reuseRowView
+            
         } else {
+            
             let rv = rowViewType.init()
             let pgr = UIPanGestureRecognizer(target: self, action: #selector(didPan(_:)))
             rv.addGestureRecognizer(pgr)
+            
             return rv
         }
     }
@@ -149,7 +148,6 @@ open class ChartView: UIView {
             let ch = ConstraintHolder()
             
             ch.rowView = rv
-            
             ch.left = rv.leftAnchor.constraint(equalTo: leftAnchor, constant: rowSpacing)
             ch.right = rv.rightAnchor.constraint(equalTo: rightAnchor, constant: -rowSpacing)
             ch.height = rv.heightAnchor.constraint(equalToConstant: rowHeight)
@@ -170,6 +168,7 @@ open class ChartView: UIView {
         }
         NSLayoutConstraint.activate(constraintHolders.flatMap { $0.all } + [bottomConstraint].flatMap { $0 })
     }
+    
     
     fileprivate var bottomConstraint: NSLayoutConstraint!
     fileprivate var constraintHolders: [ConstraintHolder]!

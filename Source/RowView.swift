@@ -1,31 +1,5 @@
 import UIKit
 
-////TODO - key value getting
-//open class RowViewConfiguration {
-//    public init(columnConfigurations: [ColumnConfiguration]) {
-//        self.columnConfigurations = columnConfigurations
-//    }
-//    public var columnConfigurations: [ColumnConfiguration] = []
-//    public static var base: RowViewConfiguration = {
-//        let cc1 = ColumnConfiguration(width: 40, viewType: UIView.self)
-//        let cc2 = ColumnConfiguration(width: 60, viewType: UIView.self)
-//        return RowViewConfiguration(columnConfigurations: [cc1,cc2])
-//    }()
-//    
-//    public var columnSpacing: CGFloat = 1
-//    public var columnBackgroundColor: UIColor = .white
-//}
-//
-//public struct ColumnConfiguration {
-//    public let width: CGFloat
-//    public let viewType: UIView.Type
-//    public func getView() -> UIView {
-//        return viewType.init()
-//    }
-//    
-//}
-
-
 public protocol ColumnConfiguration: Hashable {
     var width: CGFloat { get }
     var viewType: UIView.Type { get }
@@ -90,6 +64,12 @@ open class RowView: UIView {
         addSubview(columnView)
     }
     
+    open override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        setupColumns()
+    }
+    
     private func setupColumns() {
         switch columnViews.count {
         case 0: fatalError("Why are you using this anyways?")
@@ -99,7 +79,7 @@ open class RowView: UIView {
     }
     
     private func setOneView() {
-        columnViews.first!.frame = CGRect(x: spacing.left, y: spacing.top, width: frame.width - (spacing.left + spacing.right), height: frame.width - (spacing.top + spacing.bottom))
+        columnViews.first!.frame = CGRect(x: spacing.left, y: spacing.top, width: frame.width - (spacing.left + spacing.right), height: frame.height - (spacing.top + spacing.bottom))
     }
     
     private func setMoreViews() {
@@ -140,6 +120,7 @@ open class ConfigurableRowView<Configuration: ColumnConfiguration>: RowView {
         }
        
         columnViews = pairs.map { $0.1 }
+        columnViews.forEach { addSubview($0) }
         columnWidths = columnConfigurations.map { $0.width }
     }
     required public init?(coder aDecoder: NSCoder) { fatalError() }

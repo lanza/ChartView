@@ -2,6 +2,13 @@ import UIKit
 
 open class ChartViewCell: UITableViewCell {
     
+    public var chartViewDataSource: ChartViewDataSource! {
+        didSet {
+            chartView.dataSource = chartViewDataSource
+            setNeedsLayout()
+        }
+    }
+    
     public let topContentView = UIView()
     public let chartView = ChartView()
     public let bottomContentView = UIView()
@@ -34,5 +41,7 @@ open class ChartViewCell: UITableViewCell {
         ])
         selectionStyle = .none
     }
+    
+
     public required init?(coder aDecoder: NSCoder) { fatalError() }
 }
