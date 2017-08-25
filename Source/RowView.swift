@@ -15,7 +15,7 @@ open class RowView: UIView {
     
     public var numberOfColumns: Int { return columnViewTypes.count }
     public var columnBackgroundColor: UIColor = .white
-    public var columnSpacing: CGFloat = 1
+    public var columnSpacing: CGFloat = 0
     
     public func appendColumnView(_ columnView: UIView) {
         columnViews.append(columnView)
@@ -53,7 +53,7 @@ open class RowView: UIView {
     private func setMoreViews() {
         let height = frame.height - (spacing.top + spacing.bottom)
         
-        let usableWidth = frame.width - (spacing.left + spacing.right + (CGFloat(columnViews.count) + spacing.between))
+        let usableWidth = frame.width - (spacing.left + spacing.right + ((CGFloat(columnViews.count) - 1) * spacing.between))
         
         let totalWidthValues = columnWidths.reduce(0,+)
         let adjustedColumnWidths = columnWidths.map { ($0 / totalWidthValues) * usableWidth }
@@ -107,7 +107,7 @@ open class RowView: UIView {
         }
     }
     
-    public var spacing = Spacing(all: 1)
+    public var spacing = Spacing(left: 1, right: 1, top: 1, bottom: 0, between: 1)
     
     open override func layoutSubviews() {
         super.layoutSubviews()
