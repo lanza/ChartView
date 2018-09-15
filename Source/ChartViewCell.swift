@@ -14,7 +14,7 @@ open class ChartViewCell: UITableViewCell {
     }
     
     public let topContentView = UIView()
-    private let chartView = ChartView()
+    public let chartView = ChartView()
     public let bottomContentView = UIView()
     
     public override init(style: UITableViewCellStyle, reuseIdentifier: String?) {

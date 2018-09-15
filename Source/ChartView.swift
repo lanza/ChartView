@@ -4,14 +4,14 @@ open class ChartView: UIView {
     public enum EditingStyle {
         case delete
     }
-    
+
     public init() {
         super.init(frame: CGRect())
         let temp = heightAnchor.constraint(equalToConstant: 0)
         temp.priority = 1
         temp.isActive = true
     }
-    
+
     //MARK: - Delegation
     public weak var delegate: ChartViewDelegate?
     public weak var dataSource: ChartViewDataSource! {
@@ -19,7 +19,7 @@ open class ChartView: UIView {
             setup()
         }
     }
-    
+
     //MARK: - DataSource
     public var rowHeight: CGFloat {
         return delegate?.rowHeight(for: self) ?? 30
@@ -30,45 +30,45 @@ open class ChartView: UIView {
     public var numberOfRows: Int {
         return dataSource.numberOfRows(in: self)
     }
-    
+
     //MARK: - RowView type registration
     public func registerForReuse(_ rowViewType: RowView.Type) {
         self.rowViewType = rowViewType
 
     }
     var rowViewType: RowView.Type = RowView.self
-    
+
     //MARK: - RowViews
     public var rowViews: [RowView] { get { return _rowViews } }
-    
+
     fileprivate var _rowViews = [RowView]()
-    
+
     func appendRowView(_ rowView: RowView) {
         addSubview(rowView)
         _rowViews.append(rowView)
         rowView.translatesAutoresizingMaskIntoConstraints = false
     }
-    
+
     //MARK: - Reuse Tracking
     var currentRowCount = 0
     var unusedRows = [RowView]()
-    
+
     //MARK: - Setup
-    
+
     public func setup() {
-        
+
         unusedRows += _rowViews
         _rowViews = []
-        
+
         subviews.forEach { $0.removeFromSuperview() }
         setupRows()
         currentRowCount = numberOfRows
-    
+
         setNeedsUpdateConstraints()
-        
+
         checkAndAddEmpty()
     }
-   
+
     fileprivate var emptyBottomConstraint: NSLayoutConstraint?
     fileprivate func checkAndAddEmpty() {
         if numberOfRows == 0, let text = emptyText {
@@ -288,4 +288,5 @@ extension ChartView {
         
         NotificationCenter.default.post(name: Notification.Name(rawValue: "chartViewDidDelete"), object: self)
     }
+
 }
