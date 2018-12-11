@@ -38,7 +38,7 @@ open class RowView: UIView {
             
             cv.backgroundColor = columnBackgroundColor
             
-            cv.setContentCompressionResistancePriority(0, for: .horizontal)
+          cv.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 0), for: .horizontal)
             constraints.append(cv.topAnchor.constraint(equalTo: topAnchor, constant: 0))
             constraints.append(cv.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0))
             
@@ -51,7 +51,7 @@ open class RowView: UIView {
         }
         if let last = columnViews.last {
             let constraint = last.rightAnchor.constraint(equalTo: rightAnchor, constant: 0)
-            constraint.priority = 1000
+          constraint.priority = UILayoutPriority(rawValue: 1000)
             constraints.append(constraint)
         }
         

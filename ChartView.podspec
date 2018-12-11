@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'ChartView'
-  s.version = '0.0.1'
+  s.version = '0.1.0'
   s.license = { :type => 'MIT', :file => 'LICENSE' }
   s.summary = 'A short description of ChartView.'
 
@@ -14,9 +14,9 @@ Pod::Spec.new do |s|
   Something amazing
                        DESC
 
-  s.homepage         = 'https://github.com/nathanlanza/ChartView'
+  s.homepage = 'https://github.com/lanza/ChartView'
   s.authors = { 'Nathan Lanza' => 'nathan@lanza.io' }
-  s.source = { :git => 'https://github.com/nathanlanza/ChartView.git', :tag => s.version }
-  s.ios.deployment_target = '10.0'
+  s.source = { :git => 'https://github.com/lanza/ChartView.git', :tag => s.version }
+  s.ios.deployment_target = '12.0'
   s.source_files = 'Source/*.swift'
 end

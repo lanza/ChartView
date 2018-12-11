@@ -9,7 +9,7 @@ open class ChartView: UIView {
     public init() {
         super.init(frame: CGRect())
         let temp = heightAnchor.constraint(equalToConstant: 0)
-        temp.priority = 1
+      temp.priority = UILayoutPriority(rawValue: 1)
         temp.isActive = true
     }
     
@@ -78,7 +78,7 @@ open class ChartView: UIView {
         if numberOfRows == 0, let text = emptyText {
             if emptyBottomConstraint == nil {
                 emptyBottomConstraint = topAnchor.constraint(equalTo: bottomAnchor, constant: -emptyHeight)
-                emptyBottomConstraint?.priority = 50
+              emptyBottomConstraint?.priority = UILayoutPriority(rawValue: 50)
                 emptyBottomConstraint?.isActive = true
             }
             constrainEmptyLabel()
@@ -130,7 +130,7 @@ open class ChartView: UIView {
             let rv = dequeueRowView()
             appendRowView(rv)
             
-            var ch = ConstraintHolder()
+          let ch = ConstraintHolder()
             
             ch.rowView = rv
             
@@ -150,9 +150,9 @@ open class ChartView: UIView {
         if let last = rowViews.last {
             
             bottomConstraint = last.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -rowSpacing)
-            bottomConstraint.priority = 500
+          bottomConstraint.priority = UILayoutPriority(rawValue: 500)
         }
-        NSLayoutConstraint.activate(constraintHolders.flatMap { $0.all } + [bottomConstraint].flatMap { $0 })
+      NSLayoutConstraint.activate(constraintHolders.flatMap { $0.all } + [bottomConstraint].compactMap { $0 })
     }
     
     fileprivate var bottomConstraint: NSLayoutConstraint!
@@ -166,12 +166,12 @@ open class ChartView: UIView {
         weak var height: NSLayoutConstraint!
         weak var top: NSLayoutConstraint!
         
-        var all: [NSLayoutConstraint] { return [left,right,height,top].flatMap{ $0 ?? nil } }
+      var all: [NSLayoutConstraint] { return [left,right,height,top].compactMap{ $0 ?? nil } }
     }
     
     
     //MARK: - Gesture recognition
-    func didPan(_ pgr: UIPanGestureRecognizer) {
+  @objc func didPan(_ pgr: UIPanGestureRecognizer) {
         if delegate == nil { return }
         
         let translation = pgr.translation(in: pgr.view)
@@ -223,7 +223,7 @@ extension ChartView {
             (removingCH.all + [singleConstraint]).forEach { $0.isActive = false }
             self.bottomConstraint = self.bottomAnchor.constraint(equalTo: self.topAnchor, constant: 0)
 
-            self.bottomConstraint.priority = 100
+          self.bottomConstraint.priority = UILayoutPriority(rawValue: 100)
             self.bottomConstraint.isActive = true
             singleConstraint = bottomConstraint
             
@@ -234,7 +234,7 @@ extension ChartView {
             originalPriority = singleConstraint.priority
             (removingCH.all + [singleConstraint]).forEach { $0.isActive = false }
             belowCH.top = belowCH.rowView.topAnchor.constraint(equalTo: self.topAnchor, constant: self.rowSpacing)
-            belowCH.top.priority = 100
+          belowCH.top.priority = UILayoutPriority(rawValue: 100)
             belowCH.top.isActive = true
             singleConstraint = belowCH.top
             singleConstraintHolder = belowCH
@@ -246,7 +246,7 @@ extension ChartView {
             originalPriority = singleConstraint.priority
             (removingCH.all + [singleConstraint]).forEach { $0.isActive = false }
             self.bottomConstraint = aboveCH.rowView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -self.rowSpacing)
-            self.bottomConstraint.priority = 100
+          self.bottomConstraint.priority = UILayoutPriority(rawValue: 100)
             self.bottomConstraint.isActive = true
             singleConstraint = self.bottomConstraint
             
@@ -258,7 +258,7 @@ extension ChartView {
             originalPriority = singleConstraint.priority
             (removingCH.all + [singleConstraint]).forEach { $0.isActive = false }
             belowCH.top = aboveCH.rowView.bottomAnchor.constraint(equalTo: belowCH.rowView.topAnchor, constant: -self.rowSpacing)
-            belowCH.top.priority = 100
+          belowCH.top.priority = UILayoutPriority(rawValue: 100)
             belowCH.top.isActive = true
             singleConstraint = belowCH.top
             singleConstraintHolder = belowCH

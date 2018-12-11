@@ -6,7 +6,7 @@ open class ChartViewCell: UITableViewCell {
     public let chartView = ChartView()
     public let bottomContentView = UIView()
     
-    public override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+  public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         topContentView.translatesAutoresizingMaskIntoConstraints = false
