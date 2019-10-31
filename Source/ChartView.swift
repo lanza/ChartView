@@ -204,7 +204,7 @@ open class ChartView: UIView {
 
 extension ChartView {
     func deleteRowView(_ rowView: RowView, velocity: CGFloat) {
-        guard let index = rowViews.index(of: rowView) else { return }
+        guard let index = rowViews.firstIndex(of: rowView) else { return }
         delegate?.chartView(self, commit: .delete, forRowAt: index)
         guard chartViewDataSource.numberOfRows + 1 == rowViews.count else { fatalError("You needed to remove an element from the dataSource") }
         

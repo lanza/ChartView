@@ -11,20 +11,8 @@
 		B3DC65701E4861E100970EAC /* ChartViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DC656C1E4861E100970EAC /* ChartViewCell.swift */; };
 		B3DC65711E4861E100970EAC /* ChartViewConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DC656D1E4861E100970EAC /* ChartViewConfigurator.swift */; };
 		B3DC65721E4861E100970EAC /* RowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DC656E1E4861E100970EAC /* RowView.swift */; };
-		D9899DD41DF4A092008766B5 /* ChartView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9899DCA1DF4A092008766B5 /* ChartView.framework */; };
-		D9899DD91DF4A093008766B5 /* ChartViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9899DD81DF4A093008766B5 /* ChartViewTests.swift */; };
 		D9899DDB1DF4A093008766B5 /* ChartView.h in Headers */ = {isa = PBXBuildFile; fileRef = D9899DCD1DF4A092008766B5 /* ChartView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		D9899DD51DF4A092008766B5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D9899DC11DF4A091008766B5 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = D9899DC91DF4A091008766B5;
-			remoteInfo = ChartView;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		B3DC656B1E4861E100970EAC /* ChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
@@ -34,7 +22,6 @@
 		D9899DCA1DF4A092008766B5 /* ChartView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ChartView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9899DCD1DF4A092008766B5 /* ChartView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChartView.h; sourceTree = "<group>"; };
 		D9899DCE1DF4A092008766B5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D9899DD31DF4A092008766B5 /* ChartViewTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChartViewTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9899DD81DF4A093008766B5 /* ChartViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartViewTests.swift; sourceTree = "<group>"; };
 		D9899DDA1DF4A093008766B5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -44,14 +31,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		D9899DD01DF4A092008766B5 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				D9899DD41DF4A092008766B5 /* ChartView.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -71,7 +50,6 @@
 			isa = PBXGroup;
 			children = (
 				D9899DCA1DF4A092008766B5 /* ChartView.framework */,
-				D9899DD31DF4A092008766B5 /* ChartViewTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -130,24 +108,6 @@
 			productReference = D9899DCA1DF4A092008766B5 /* ChartView.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		D9899DD21DF4A092008766B5 /* ChartViewTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = D9899DE11DF4A093008766B5 /* Build configuration list for PBXNativeTarget "ChartViewTests" */;
-			buildPhases = (
-				D9899DCF1DF4A092008766B5 /* Sources */,
-				D9899DD01DF4A092008766B5 /* Frameworks */,
-				D9899DD11DF4A092008766B5 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				D9899DD61DF4A092008766B5 /* PBXTargetDependency */,
-			);
-			name = ChartViewTests;
-			productName = ChartViewTests;
-			productReference = D9899DD31DF4A092008766B5 /* ChartViewTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -155,28 +115,24 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0810;
-				LastUpgradeCheck = 0810;
+				LastUpgradeCheck = 1110;
 				ORGANIZATIONNAME = Lanzaio;
 				TargetAttributes = {
 					D9899DC91DF4A091008766B5 = {
 						CreatedOnToolsVersion = 8.1;
 						DevelopmentTeam = 8Q693ZG5RN;
-						LastSwiftMigration = 0820;
-						ProvisioningStyle = Automatic;
-					};
-					D9899DD21DF4A092008766B5 = {
-						CreatedOnToolsVersion = 8.1;
-						DevelopmentTeam = 8Q693ZG5RN;
+						LastSwiftMigration = 1110;
 						ProvisioningStyle = Automatic;
 					};
 				};
 			};
 			buildConfigurationList = D9899DC41DF4A091008766B5 /* Build configuration list for PBXProject "ChartView" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = D9899DC01DF4A091008766B5;
 			productRefGroup = D9899DCB1DF4A092008766B5 /* Products */;
@@ -184,20 +140,12 @@
 			projectRoot = "";
 			targets = (
 				D9899DC91DF4A091008766B5 /* ChartView */,
-				D9899DD21DF4A092008766B5 /* ChartViewTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		D9899DC81DF4A091008766B5 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		D9899DD11DF4A092008766B5 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -218,43 +166,37 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D9899DCF1DF4A092008766B5 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				D9899DD91DF4A093008766B5 /* ChartViewTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		D9899DD61DF4A092008766B5 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = D9899DC91DF4A091008766B5 /* ChartView */;
-			targetProxy = D9899DD51DF4A092008766B5 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		D9899DDC1DF4A093008766B5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -294,20 +236,30 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -353,7 +305,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -373,33 +325,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "io.lanza.--PROJECT-NAME--";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
-			};
-			name = Release;
-		};
-		D9899DE21DF4A093008766B5 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				DEVELOPMENT_TEAM = 8Q693ZG5RN;
-				INFOPLIST_FILE = ChartViewTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "io.lanza.--PROJECT-NAME--Tests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
-			};
-			name = Debug;
-		};
-		D9899DE31DF4A093008766B5 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				DEVELOPMENT_TEAM = 8Q693ZG5RN;
-				INFOPLIST_FILE = ChartViewTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "io.lanza.--PROJECT-NAME--Tests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -420,15 +346,6 @@
 			buildConfigurations = (
 				D9899DDF1DF4A093008766B5 /* Debug */,
 				D9899DE01DF4A093008766B5 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		D9899DE11DF4A093008766B5 /* Build configuration list for PBXNativeTarget "ChartViewTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				D9899DE21DF4A093008766B5 /* Debug */,
-				D9899DE31DF4A093008766B5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
